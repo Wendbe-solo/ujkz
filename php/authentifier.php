@@ -1,3 +1,37 @@
+<?php
+    session_start();
+    include ('database.php');
+
+
+    if(isset($_POST['envoi'])){
+        if(!empty($_POST['email']) AND !empty($_POST['mdp'])){
+
+            $pseudo = htmlspecialchars($_POST['email']);
+            $mdp = sha1($_POST['mdp']);
+
+            $recupUser = $bdd->prepare('SELECT * FROM directeur WHERE email =? AND mdp =?');
+            $recupUser->execute(array($pseudo,$mdp));
+
+            if($recupUser->rowCount() >0 ){
+
+                $_SESSION['email'] = $pseudo;
+                $_SESSION['mdp'] = $mdp;
+                $_SESSION['id'] = $recupUser->fetch()['id'];
+
+                echo $_SESSION['email'];
+                header('Location: index.php');
+
+                
+
+            }else{ echo "votre email ou mot de passe est incorecte";
+
+            }
+        }else{
+            echo "Veuillez compléter tous les champs ....";
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,24 +70,20 @@
     </center>
     <br>
       <center>
-      <div class="container bon">
-			<div class="row jour">
-				<div class="col-md-10   ">
-					<form action="authenti1.php" method="post">
-		                <label>E-mail: </label> <input type="text" name="email" id=""><br><br>
-
-						<label>Mot de passe: </label> <input type="password" name="passwords" id="motdepasse"><br /><br>
-
-						<input type="checkbox" onclick="Afficher()" id="aff"> Afficher le mot de passe<br><br>
-
-					<div class="ferm">
-						<button class="btn1" type="submit" name="connecter"> connexion</button>
-						
-					</div>
-					</form>
-				</div>
-			</div>
-		</div>
+      <form action="" method="POST" align="center"> 
+        <input type="text" name="email"  autocomplete="off" class="formulaire" placeholder="EMAIL"> 
+        <br> 
+        <br>
+        <input type="password" name="mdp"  autocomplete="off" class="formulaire" placeholder="MOT DE PASSE">
+        <br>
+        <br>
+        <br><br>
+        <div class="container flex">
+     <a href="../index.html" class="formula" > Retour
+    </a>
+        <input type="submit" value="Se connecter" class="formula" name="envoi">
+  </div>
+    </form>
       </center>
 
 

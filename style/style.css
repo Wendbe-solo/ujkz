@@ -22,10 +22,12 @@ body{
 .connecter{
     background-color: #198754 !important;
     font-weight: 500;
+    
 }
 .inscrire{
     background-color: yellow !important;
     font-weight: 500;
+    color: black !important;
 }
 .fote{
     background-color: #198754;
@@ -90,6 +92,11 @@ body{
 .second{
     text-align: justify;
     font-size: 20px !important;
+}
+
+
+a{
+    text-decoration: none  !important;
 }
 
     

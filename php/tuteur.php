@@ -1,3 +1,45 @@
+<?php
+session_start();
+
+include ('database.php');
+
+if(isset($_POST['envoi'])){
+    if(!empty($_POST['nom']) AND !empty($_POST['prenom'])  AND  !empty($_POST['email']) AND !empty($_POST['numero'])){
+        
+        $nom =  htmlspecialchars($_POST['nom']);
+        $prenom =  htmlspecialchars($_POST['prenom']);
+        $pseudo = htmlspecialchars($_POST['email']);
+        $numero = htmlspecialchars($_POST['numero']);
+
+        $insertUser = $bdd->prepare('INSERT INTO tuteur (nom,prenom,email,numero)VALUES (?,?,?,?) ');
+        $insertUser->execute(array($nom, $prenom,$pseudo, $numero));
+
+        $recupUser = $bdd->prepare('SELECT * FROM tuteur WHERE  nom =? AND prenom= ? AND email = ? AND numero =?');
+        $recupUser->execute(array($nom,$prenom,$pseudo, $numero));
+        if($recupUser->rowCount() > 0){
+            
+            $_SESSION['nom'] = $nom;
+            $_SESSION['prenom'] = $prenom;
+            $_SESSION['email'] = $pseudo;
+            $_SESSION['numero'] = $numero;
+            $_SESSION['id'] = $recupUser->fetch()['id'];
+        }
+
+        
+        echo 'Enregistrer avec succès';
+        header('Location: ./index.php');
+        
+
+        
+        
+
+        
+    }else{
+        echo "veuillez compléter tous les champ ...";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,24 +70,24 @@
       <br><br>
       <div class="container travail">
 
-      <h3 class="text-center viens">Page d'inscription Tuteur </h3>
+      <h3 class="text-center viens">Inscription Tuteur </h3>
 
 
 
 
       <center>
-        <form action="./authen.php" method="post" class="">
-            <input required type="text" name="nom" id="nom" class="formulaire" placeholder="NOM"> <br><br>
-            <input required type="text" name="prenom" id="prenom" class="formulaire" placeholder="PRENOM"> <br><br>
+        <form action="" method="post" class="">
+            <input type="text" name="nom" id="nom" class="formulaire" placeholder="NOM"> <br><br>
+            <input type="text" name="prenom" id="prenom" class="formulaire" placeholder="PRENOM"> <br><br>
             
-            <input required type="email" name="email" id="emai" class="formulaire" placeholder="EMAIL"> <br><br>
-            <input required type="text" name="numero" class="formulaire" placeholder=" NUMERO" > <br><br>
+            <input type="email" name="email" id="emai" class="formulaire" placeholder="EMAIL"> <br><br>
+            <input type="text" name="numero" class="formulaire" placeholder=" NUMERO" > <br><br>
         <p>
     </p>
     <div class="container flex">
-     <a href="./index.html"><input type="submit" value="Retour"class="formula" name="submit">
+     <a href="./index.php" class="formula">Retour
     </a>
-    <input type="submit" value="Enregistrer"class="formula" name="submit">
+    <input type="submit" value="Enregistrer"class="formula" name="envoi">
 </div>
         </form>
         </center>

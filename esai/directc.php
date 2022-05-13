@@ -2,17 +2,17 @@
     session_start();
     $bdd = new PDO('mysql:host=localhost;dbname=espace_membres;charset=utf8;','root','');
     if(isset($_POST['envoi'])){
-        if(!empty($_POST['pseudo']) AND !empty($_POST['mdp'])){
+        if(!empty($_POST['email']) AND !empty($_POST['mdp'])){
 
-            $pseudo = htmlspecialchars($_POST['pseudo']);
+            $pseudo = htmlspecialchars($_POST['email']);
             $mdp = sha1($_POST['mdp']);
 
-            $recupUser = $bdd->prepare('SELECT * FROM users WHERE pseudo =? AND mdp =?');
+            $recupUser = $bdd->prepare('SELECT * FROM directeur WHERE email =? AND mdp =?');
             $recupUser->execute(array($pseudo,$mdp));
 
             if($recupUser->rowCount() >0 ){
 
-                $_SESSION['pseudo'] = $pseudo;
+                $_SESSION['email'] = $pseudo;
                 $_SESSION['mdp'] = $mdp;
                 $_SESSION['id'] = $recupUser->fetch()['id'];
 
@@ -36,7 +36,7 @@
 </head>
 <body>
     <form action="" method="POST" align="center"> 
-        <input type="text" name="pseudo">
+        <input type="email" name="email ">
         <br>
         <input type="password" name="mdp">
         <br><br>

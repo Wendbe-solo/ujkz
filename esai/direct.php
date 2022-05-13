@@ -9,10 +9,10 @@ if(isset($_POST['envoi'])){
         $prenom =  htmlspecialchars($_POST['prenom']);
         $mdp = sha1($_POST['mdp']);
 
-        $insertUser = $bdd->prepare('INSERT INTO users(pseudo,nom,prenom, mdp)VALUES (?,?,?,?) ');
+        $insertUser = $bdd->prepare('INSERT INTO directeur(email,nom,prenom, mdp)VALUES (?,?,?,?) ');
         $insertUser->execute(array($pseudo,$nom,$prenom, $mdp));
 
-        $recupUser = $bdd->prepare('SELECT * FROM users WHERE pseudo = ? AND nom =? AND prenom = ? AND mdp =?');
+        $recupUser = $bdd->prepare('SELECT * FROM directeur WHERE email = ? AND nom =? AND prenom = ? AND mdp =?');
         $recupUser->execute(array($pseudo,$nom,$prenom,$mdp));
         if($recupUser->rowCount() > 0){
             $_SESSION['email'] = $pseudo;
@@ -23,6 +23,7 @@ if(isset($_POST['envoi'])){
         }
 
         echo $_SESSION['id'];
+        header ('Location: directc.php');
 
         
     }else{

@@ -1,3 +1,47 @@
+<?php
+session_start();
+
+include ('database.php');
+
+if(isset($_POST['envoi'])){
+    if(!empty($_POST['email']) AND !empty($_POST['nom']) AND !empty($_POST['prenom']) AND !empty($_POST['mdp']) AND !empty($_POST['mdp'])){
+        $pseudo = htmlspecialchars($_POST['email']);
+        $nom =  htmlspecialchars($_POST['nom']);
+        $prenom =  htmlspecialchars($_POST['prenom']);
+        $mdp = sha1($_POST['mdp']);
+        $pconf = sha1($_POST['pconf']);
+
+        if($mdp==$pconf){
+          $insertUser = $bdd->prepare('INSERT INTO directeur (email,nom,prenom, mdp)VALUES (?,?,?,?) ');
+        $insertUser->execute(array($pseudo,$nom, $prenom, $mdp));
+
+        $recupUser = $bdd->prepare('SELECT * FROM directeur WHERE email = ? AND nom =? AND prenom= ? AND mdp =?');
+        $recupUser->execute(array($pseudo,$nom,$prenom, $mdp));
+        if($recupUser->rowCount() > 0){
+            $_SESSION['email'] = $pseudo;
+            $_SESSION['nom'] = $nom;
+            $_SESSION['prenom'] = $prenom;
+            $_SESSION['mdp'] = $mdp;
+            $_SESSION['id'] = $recupUser->fetch()['id'];
+        }
+
+        
+        echo 'Enregistrer avec succès';
+        header('Location: ../index.html');
+        
+
+        }else{
+          echo 'mot de passe incorect';
+          
+        }
+        
+
+        
+    }else{
+        echo "veuillez compléter tous les champ ...";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,31 +77,27 @@
 
 
 
-      <center>
-      <?php
-    if(isset($_GET["error"])){
-        if($_GET["error"]==1){
-        echo"<div class='mot-de-pass' style='color:red;text-align:center;font-weight:bold;'
-        >mot de passe different!</div>";
-        }
-        
-    }
-    ?>
-    <div class="container-fluid formu">
-        <div class=" row fofo">
-            <div class=" col-md-10">
-                <form action="inscription1.php" method="post">
-                    Nom<input type="text" name="nom" id="" class="inputnom" required=""><br>
-                    Prenom <input type="text" name="prenom" id="" class="inputprenom" required><br>
-                    E-mail <input type="email" name="email" id="" class="inputmail" required><br>
-                     Passwords<input type="passwords" name="passwords" id="" class="inputpasswords" required><br>
-                    confirmer pass <input type="passwords" name="pconf" id="" class="inputpasswords1" required>
-                    
-                    <button type="submit" value="fermer" name="fermer" id="fermer"><a  class="buton" href="../index.html">Fermer</a></button> 
-                    <span class="buton1"><button type="submit" value="Valider" name="valider" id="Valider"> Valider</button></span>
+      <form action="" method="POST" align="center">
+    <input type="email" name="email" autocomplete="off" class="formulaire" placeholder="EMAIL">
+    <br> <br>
+    <input type="text" name="nom" autocomplete="off" class="formulaire" placeholder="NOM">
+    <br> <br>
+    <input type="text" name="prenom" autocomplete="off" class="formulaire" placeholder="PRENOM">
+    <br> <br>
+    <input type="password" name="mdp" autocomplete="off" class="formulaire" placeholder="MOT DE PASSE">
+    <br><br>
+    <input type="password" name="pconf" autocomplete="off" class="formulaire" placeholder="CONFIRMER MOT DE PASSE">
+    <br>
+    <br>
 
-                </form>
-        </center>
+    <div class="container flex">
+     <a href="../index.html" class="formula" > Retour
+    </a>
+    <input type="submit" value="Enregistrer" class="formula" name="envoi">
+</div>
+    
+</form>
+
     </div>
 <br> <br>
 

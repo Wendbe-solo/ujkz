@@ -46,16 +46,16 @@
       </div>
 
       <center>
-        <a href="./tuteur.html">
-      <button type="button" class="btn btn-primary btn-lg">Inscrire <br> un tuteur</button></a>
-      <a href="./ficheabo.html">
-      <button type="button" class="btn btn-secondary btn-lg">Inscrire <br> un etudiant</button></a>
+        <a href="./tuteur.php">
+      <button type="button" class="btn btn-primary connecter btn-lg">Inscrire <br> un tuteur</button></a>
+      <a href="./ficheabo.php">
+      <button type="button" class="btn btn-secondary inscrire btn-lg">Inscrire <br> un etudiant</button></a>
     </center>
 
 <br> <br>
 <div class="d-grid gap-2 col-6 mx-auto">
-    <button class="btn btn-primary" type="button">Liste des Etudiants</button>
-    <button class="btn btn-primary" type="button">Liste des Tuteurs</button>
+    <button class="btn btn-primary connecter" type="button">Liste des Etudiants</button>
+    <button class="btn btn-primary inscrire" type="button">Liste des Tuteurs</button>
   </div>
       <br><br>
       <div class="d-flex bd-highlight fote">
