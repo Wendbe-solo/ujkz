@@ -14,19 +14,19 @@ if(isset($_POST['envoi'])){
         $numero = htmlspecialchars($_POST['numero']);
         $tuteur =  htmlspecialchars($_POST['tuteur']);
 
-          $insertUser = $bdd->prepare('INSERT INTO etudiants (nom,prenom,age,email,numero,tuteur)VALUES (?,?,?,?,?,?) ');
-        $insertUser->execute(array($nom, $prenom,$pseudo, $numero));
+          $insertUser = $bdd->prepare('INSERT INTO etudiants (nom,prenom,date_naissance,email,numero,id_tuteur)VALUES (?,?,?,?,?,?) ');
+        $insertUser->execute(array($nom, $prenom,$age,$pseudo, $numero,$tuteur));
 
-        $recupUser = $bdd->prepare('SELECT * FROM etudiants WHERE  nom =? AND prenom= ? AND email = ? AND numero =?');
-        $recupUser->execute(array($nom,$prenom,$pseudo, $numero));
+        $recupUser = $bdd->prepare('SELECT * FROM etudiants WHERE  nom =? AND prenom= ? AND date_naissance= ? AND email = ? AND numero =? AND id_tuteur= ?');
+        $recupUser->execute(array($nom,$prenom,$age,$pseudo, $numero,$tuteur));
         if($recupUser->rowCount() > 0){
             
             $_SESSION['nom'] = $nom;
             $_SESSION['prenom'] = $prenom;
-            $_SESSION['age'] = $nom;
+            $_SESSION['age'] = $age;
             $_SESSION['email'] = $pseudo;
             $_SESSION['numero'] = $numero;
-            $_SESSION['tuteur'] = $nom;
+            $_SESSION['tuteur'] = $tuteur;
             $_SESSION['id'] = $recupUser->fetch()['id'];
         }
 
@@ -77,23 +77,20 @@ if(isset($_POST['envoi'])){
 
       <h3 class="text-center viens">Inscription Etudiants </h3>
 
-
-
-
       <center>
-        <form action="./authen.php" method="post" class="">
+        <form method="POST" class="">
             <input type="text" name="nom" id="nom" class="formulaire" placeholder="NOM"> <br><br>
             <input type="text" name="prenom" id="prenom" class="formulaire" placeholder="PRENOM"> <br><br>
-            <input type="text" name="age" id="age" class="formulaire" placeholder="DATE DE NAISSANCE"> <br><br>
+            <input type="date" name="age" id="age" class="formulaire" placeholder="DATE DE NAISSANCE"> <br><br>
             <input type="email" name="email" id="emai" class="formulaire" placeholder="EMAIL"> <br><br>
-            <input type="text" name="numero" class="formulaire" placeholder=" NUMERO" > <br><br>
+            <input type="number" name="numero" class="formulaire" placeholder=" NUMERO" > <br><br>
             <input type="text" name="tuteur" id="prenom" class="formulaire" placeholder="TUTEUR"> <br><br>
         <p>
     </p>
     <div class="container flex">
      <a href="./index.php" class="formula">Retour
     </a>
-    <input type="submit" value="Enregistrer"class="formula" name="submit">
+    <input type="submit" value="Enregistrer"class="formula" name="envoi">
 </div>
         </form>
         </center>
